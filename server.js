@@ -2,9 +2,17 @@
 var express = require('express');
 var request = require('request');
 var querystring = require('querystring');
-var SpotifyWebApi = require('spotify-web-api-node');
 var cors = require('cors');
-var config = require('./config.json');
+
+// For local development use config file
+try {
+    var config = require('./config.json');
+}
+catch(e) {
+    if (!(e instanceof Error && e.code === "MODULE_NOT_FOUND")) {
+        throw e;
+    }
+}
 
 // Spotify credentials
 var CLIENT_ID = process.env.CLIENT_ID || config.CLIENT_ID;
