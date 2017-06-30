@@ -10,10 +10,11 @@
   "author": "jane-doe",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "cors": "^2.8.3",
-    "express": "~4.0.0",
-    "request": "~2.34.0",
-    "spotify-web-api-node": "^2.4.0"
+    "express": "^4.15.3",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   },
   "engines": {
     "node": "4.1.1"
