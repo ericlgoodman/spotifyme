@@ -34,7 +34,7 @@ app.use(cors());
  * @param accessToken - Spotify access token
  * @returns {Promise} - JSON
  */
-function getFromSpotify(url, accessToken) {
+function getFromSpotify(url, accessToken, name) {
     // Set request parameters
     return new Promise(function (resolve, reject) {
         var options = {
@@ -44,12 +44,14 @@ function getFromSpotify(url, accessToken) {
         };
 
         request.get(options, function (error, response, body) {
+            clientResponse = {};
             if (!error) {
-                resolve(body);
+                clientResponse[name] = body;
+                resolve(clientResponse);
             }
             else {
-                console.error("Error retrieving data from Spotify: ", error);
-                reject(error);
+                clientResponse['Error'] = error;
+                reject(clientResponse);
             }
         });
     });
@@ -79,10 +81,10 @@ app.get('/', function (req, res) {
     };
 
     var spotifyReqests = {
-        followedArtistsUrl: 'https://api.spotify.com/v1/me/following',
-        recentlyPlayedUrl: 'https://api.spotify.com/v1/me/player/recently-played',
-        playlistsUrl: 'https://api.spotify.com/v1/me/playlists',
-        tracksUrl: 'https://api.spotify.com/v1/me/tracks'
+        'followed_artists': 'https://api.spotify.com/v1/me/following?type=artist',
+        'recently_played': 'https://api.spotify.com/v1/me/player/recently-played',
+        'playlists': 'https://api.spotify.com/v1/me/playlists',
+        'tracks': 'https://api.spotify.com/v1/me/tracks'
     };
 
     rp(authOptions)
@@ -96,16 +98,27 @@ app.get('/', function (req, res) {
 
             for (var name in spotifyReqests) {
                 var url = spotifyReqests[name];
-                requests.push(getFromSpotify(url, accessToken));
+                requests.push(getFromSpotify(url, accessToken, name));
             }
             // Asynchronously request all -> join after
             return Promise.all(requests)
         })
-        .then(function (data) {
-            res.send(data);
+        .then(function (response) {
+            var clientResponse = {};
+
+            /* Parse array and place each nested dictionary into larger one */
+            response.forEach(function(item) {
+                var keys = Object.keys(item);
+
+                // Only one key per nested dictionary
+                console.assert(keys.length === 1);
+                var key = keys[0];
+
+                clientResponse[key] = item[key];
+            });
+            res.send(clientResponse);
         })
         .catch(function (err) {
-            console.error('Error:', err);
             res.status(500).send({'Error:': err.message});
         });
 
