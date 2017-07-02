@@ -17,6 +17,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
+/* Application setup */
 let app = express();
 app.use(cors());
 
@@ -84,7 +85,7 @@ app.get('/', function (req, res) {
             // Obtain access token necessary for requests
             let accessToken = body.access_token;
 
-            /*[String]*/
+            /* [ Promise ] */
             let requests = [];
 
             for (let name in spotifyReqests) {
@@ -119,6 +120,3 @@ app.get('/', function (req, res) {
 let listener = app.listen(process.env.PORT || 5000, function () {
     console.log('Listening on port ' + listener.address().port);
 });
-
-
-
