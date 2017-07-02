@@ -1,8 +1,8 @@
 {
-  "name": "node-example",
+  "name": "SpotifyMe",
   "version": "1.0.0",
-  "description": "This example is so cool.",
-  "main": "web.js",
+  "description": "Serve my Spotify data",
+  "main": "server.js",
   "keywords": [
     "example",
     "heroku"
@@ -10,13 +10,22 @@
   "author": "jane-doe",
   "license": "MIT",
   "dependencies": {
+    "babel-core": "^6.25.0",
     "bluebird": "^3.5.0",
     "cors": "^2.8.3",
+    "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   },
   "engines": {
     "node": "4.1.1"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/babel-node server.js"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.5.2",
+    "json-loader": "^0.5.4"
   }
 }
