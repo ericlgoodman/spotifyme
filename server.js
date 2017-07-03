@@ -39,7 +39,6 @@ function getFromSpotify(url, accessToken) {
         request.get(options, function (error, response, body) {
             clientResponse = {};
             if (!error) {
-                clientResponse[name] = body;
                 resolve(clientResponse);
             }
             else {
@@ -57,7 +56,7 @@ app.get('/', function (req, res) {
     // Validate
     validSources = ['ericgoodman.me', 'localhost'];
     if (!validSources.includes(req.hostname)) {
-        res.status(400).send('Bad request');
+        res.status(400).send({'Bad request:' : req.hostname});
     }
 
     // Refresh token
