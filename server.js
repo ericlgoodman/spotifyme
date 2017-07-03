@@ -27,7 +27,7 @@ app.use(cors());
  * @param accessToken - Spotify access token
  * @returns {Promise} - JSON
  */
-function getFromSpotify(url, accessToken) {
+function getFromSpotify(url, accessToken, name) {
     // Set request parameters
     return new Promise((resolve, reject) => {
         let options = {
@@ -37,8 +37,9 @@ function getFromSpotify(url, accessToken) {
         };
 
         request.get(options, function (error, response, body) {
-            clientResponse = {};
+            let clientResponse = {};
             if (!error) {
+                clientResponse[name] = body;
                 resolve(clientResponse);
             }
             else {
@@ -54,7 +55,7 @@ function getFromSpotify(url, accessToken) {
 app.get('/', function (req, res) {
 
     // Validate
-    validSources = ['ericgoodman.me', 'localhost'];
+    let validSources = ['ericgoodman.me', 'localhost'];
     if (!validSources.includes(req.hostname)) {
         res.status(400).send({'Bad request:' : req.hostname});
     }
@@ -79,17 +80,17 @@ app.get('/', function (req, res) {
     };
 
     rp(authOptions)
-        .then(body => {
+        .then(response => {
 
             // Obtain access token necessary for requests
-            let accessToken = body.access_token;
+            let accessToken = response.access_token;
 
             /* [ Promise ] */
             let requests = [];
 
             for (let name in spotifyReqests) {
                 let url = spotifyReqests[name];
-                requests.push(getFromSpotify(url, accessToken));
+                requests.push(getFromSpotify(url, accessToken, name));
             }
             // Asynchronously request all -> join after
             return Promise.all(requests)
@@ -110,7 +111,8 @@ app.get('/', function (req, res) {
             res.send(clientResponse);
         })
         .catch(function (err) {
-            res.status(500).send({'Error:': err.message});
+            console.error(err);
+            res.send({'Error:': err.message});
         });
 
 });
