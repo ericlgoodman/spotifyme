@@ -25,9 +25,10 @@ app.use(cors());
  * Make get request from Spotify API
  * @param url - Endpoint API url
  * @param accessToken - Spotify access token
+ * @param name - String name to refer to request in finalized JSON
  * @returns {Promise} - JSON
  */
-function getFromSpotify(url, accessToken, name) {
+let spotifyRequest = (url, accessToken, name) => {
     // Set request parameters
     return new Promise((resolve, reject) => {
         let options = {
@@ -90,7 +91,7 @@ app.get('/', function (req, res) {
 
             for (let name in spotifyReqests) {
                 let url = spotifyReqests[name];
-                requests.push(getFromSpotify(url, accessToken, name));
+                requests.push(spotifyRequest(url, accessToken, name));
             }
             // Asynchronously request all -> join after
             return Promise.all(requests)
