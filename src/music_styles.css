@@ -1,0 +1,36 @@
+#main {
+    margin-top: 20px;
+}
+
+body {
+    background-color: #00aedb;
+    height: auto;
+}
+
+.artist-name {
+    font-family: Quicksand;
+    font-size: 30px;
+}
+
+.artist {
+    padding-bottom: 20px;
+}
+
+#follwedartistslist > small {
+    font-size: 20px;
+}
+
+li {
+    opacity: 1;
+}
+li.ng-enter {
+    -webkit-transition: 1s;
+    transition: 2s;
+    opacity: 0;
+}
+li.ng-enter-active {
+    opacity: 1;
+}
+li.ng-leave {
+    opacity: 0;
+}
