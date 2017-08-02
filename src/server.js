@@ -20,6 +20,7 @@ const LIMIT = 50;
 
 /* Application setup */
 let app = express();
+
 app.use(cors());
 
 let spotifyAuthOptions = (url, accessToken) => {
@@ -29,7 +30,6 @@ let spotifyAuthOptions = (url, accessToken) => {
         json: true
     };
 };
-
 
 /**
  * Make recursive get requests from Spotify API
@@ -130,6 +130,7 @@ app.get('/', function (req, res) {
             res.send(response);
         })
         .catch(function (err) {
+            console.log('not ok');p
             console.error(err);
             res.send({'Error:': err.message});
         });
