@@ -14,9 +14,7 @@ let dotenv = require('dotenv').config();
 /* Spotify Credentials */
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
-const LIMIT = 50;
 
 /* Application setup */
 let app = express();
@@ -43,7 +41,6 @@ let spotifyRecursiveRequest = (url, accessToken, identifier) => {
     let spotifyResponses = [];
 
     let recursiveQuery = (url, accessToken) => {
-        // Set request parameters
         return new Promise((resolve, reject) => {
             rp(spotifyAuthOptions(url, accessToken)).then(response => {
                 spotifyResponses.push(response.artists.items);
@@ -68,7 +65,7 @@ let spotifyRecursiveRequest = (url, accessToken, identifier) => {
                     resolve(clientResponse);
                 }
             }).catch(err => {
-                reject(console.error(err));
+                reject(err);
             });
         });
     };
@@ -130,7 +127,6 @@ app.get('/', function (req, res) {
             res.send(response);
         })
         .catch(function (err) {
-            console.log('not ok');p
             console.error(err);
             res.send({'Error:': err.message});
         });

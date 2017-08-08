@@ -1,6 +1,6 @@
 {
   "name": "SpotifyMe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Serve my Spotify data",
   "main": "src/server.js",
   "keywords": [
